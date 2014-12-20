@@ -21,15 +21,14 @@ $app->get('/', function() use($app) {
     $config_file_path = __DIR__ . '/../hybridauth/config.php';
     require_once( __DIR__ . "/../hybridauth/Hybrid/Auth.php" );
     $hybridauth = new Hybrid_Auth($config_file_path);
-    $hybridauth_session_data = $hybridauth->getSessionData();
-//    $adapter = $hybridauth->authenticate("Google");
     $adapter = $hybridauth->authenticate("Facebook");
     $user_profile = $adapter->getUserProfile();
-    echo "<pre>";
-    var_dump($userProfile);
-    var_dump($hybridauth_session_data);
-    echo 'neat';
-    echo "</pre>";
+    echo $user_profile->profileURL;
+    echo $adapter->getAccessToken();
+    echo "Hi there! " . $user_profile->displayName;
+    echo "Hi there! " . $user_profile->firstName;
+    echo "Hi there! " . $user_profile->lastName;
+    echo "Hi there! " . $user_profile->email;
     return 'Hello';
 });
 
