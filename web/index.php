@@ -2,6 +2,7 @@
 
 require('../vendor/autoload.php');
 require('../config/config.php');
+require_once( __DIR__ . "/../hybridauth/Hybrid/Auth.php" );
 $app = new Silex\Application();
 $app['debug'] = true;
 // Register the monolog logging service
@@ -18,19 +19,29 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 // Our web handlers
 $app->get('/', function() use($app) {
     $app['monolog']->addDebug('logging output.');
+    return 'Hello World!';
+});
+
+$app->get('/facebook', function () use ($app) {
+
     $config_file_path = __DIR__ . '/../hybridauth/config.php';
-    require_once( __DIR__ . "/../hybridauth/Hybrid/Auth.php" );
     $hybridauth = new Hybrid_Auth($config_file_path);
     $adapter = $hybridauth->authenticate("Facebook");
-//    $adapter = $hybridauth->authenticate("Google");
     $user_profile = $adapter->getUserProfile();
-    echo $user_profile->profileURL;
     echo $adapter->getAccessToken();
-    echo "Hi there! " . $user_profile->displayName;
-    echo "Hi there! " . $user_profile->firstName;
-    echo "Hi there! " . $user_profile->lastName;
-    echo "Hi there! " . $user_profile->email;
-    return 'Hello';
+    print_details($user_profile);
+    return 'Facebook!!!';
+});
+
+$app->get('/google', function () use ($app) {
+
+    $config_file_path = __DIR__ . '/../hybridauth/config.php';
+    $hybridauth = new Hybrid_Auth($config_file_path);
+    $adapter = $hybridauth->authenticate("Google");
+    $user_profile = $adapter->getUserProfile();
+    echo $adapter->getAccessToken();
+    print_details($user_profile);
+    return 'Google!!!';
 });
 
 $app->get('/twig/{name}', function ($name) use ($app) {
@@ -97,3 +108,11 @@ $app->get('/mongo', function () use ($app) {
 });
 
 $app->run();
+
+function print_details($user_profile) {
+    echo "Profile URL: " . $user_profile->profileURL . "\n";
+    echo "Display Name: " . $user_profile->displayName . "\n";
+    echo "First Name: " . $user_profile->firstName . "\n";
+    echo "Last Name: " . $user_profile->lastName . "\n";
+    echo "Email: " . $user_profile->email . "\n";
+}
