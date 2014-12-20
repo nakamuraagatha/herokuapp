@@ -1,0 +1,19 @@
+{
+    "name": "Mystique/heroku",
+    "description": "Heroku PHP Application",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ajay More",
+            "email": "ajmore.biz@gmail.com"
+        }
+    ],
+    "require": {
+        "ext-mongo": "*",
+        "silex/silex": "~1.1",
+        "monolog/monolog": "~1.7"
+    },
+    "require-dev": {
+        "heroku/heroku-buildpack-php": "*"
+    }
+}
