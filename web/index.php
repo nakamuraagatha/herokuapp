@@ -2,9 +2,6 @@
 
 require('../vendor/autoload.php');
 require('../config/config.php');
-if ($mode_development) {
-//    require('../config/dev.php');
-}
 
 $app = new Silex\Application();
 $app['debug'] = true;
@@ -23,8 +20,8 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 
 $app->get('/', function() use($app) {
     $app['monolog']->addDebug('logging output.');
-    return str_repeat('Hello', getenv('TIMES'));
-//    return str_repeat('Hello', 5);
+    $config_times = getenv('TIMES') ? getenv('TIMES') : dev_config('TIMES');
+    return str_repeat('Hello', $config_times);
 });
 
 $app->get('/twig/{name}', function ($name) use ($app) {
