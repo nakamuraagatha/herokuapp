@@ -21,8 +21,8 @@ $app->get('/', function() use($app) {
     $config_file_path = __DIR__ . '/../hybridauth/config.php';
     require_once( __DIR__ . "/../hybridauth/Hybrid/Auth.php" );
     $hybridauth = new Hybrid_Auth($config_file_path);
-//    $adapter = $hybridauth->authenticate("Facebook");
-    $adapter = $hybridauth->authenticate("Google");
+    $adapter = $hybridauth->authenticate("Facebook");
+//    $adapter = $hybridauth->authenticate("Google");
     $user_profile = $adapter->getUserProfile();
     echo $user_profile->profileURL;
     echo $adapter->getAccessToken();
