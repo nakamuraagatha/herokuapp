@@ -7,7 +7,9 @@ $mode_development = TRUE;
 function dev_config($key) {
 
     $configs = array(
-        'TIMES' => 70
+        'TIMES' => 70,
+        'MONGO_URI' => "mongodb://localhost:27017/heroku",
+        'MONGO_DB' => "heroku"
     );
 
     return $configs[$key];
