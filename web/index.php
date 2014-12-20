@@ -26,7 +26,6 @@ $app->get('/', function() use($app) {
     $adapter = $hybridauth->authenticate("Facebook");
     $user_profile = $adapter->getUserProfile();
     echo "<pre>";
-    print_r($adapter->getTokens());
     print_r($userProfile);
     echo "</pre>";
     return 'Hello';
