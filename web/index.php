@@ -26,7 +26,9 @@ $app->get('/', function() use($app) {
     $adapter = $hybridauth->authenticate("Facebook");
     $user_profile = $adapter->getUserProfile();
     echo "<pre>";
-    print_r($userProfile);
+    var_dump($userProfile);
+    var_dump($hybridauth_session_data);
+    echo 'neat';
     echo "</pre>";
     return 'Hello';
 });
