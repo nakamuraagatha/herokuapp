@@ -28,7 +28,7 @@ $app->get('/facebook', function () use ($app) {
     $hybridauth = new Hybrid_Auth($config_file_path);
     $adapter = $hybridauth->authenticate("Facebook");
     $user_profile = $adapter->getUserProfile();
-    echo $adapter->getAccessToken();
+    var_dump($adapter->getAccessToken());
     print_details($user_profile);
     return 'Facebook!!!';
 });
@@ -39,7 +39,7 @@ $app->get('/google', function () use ($app) {
     $hybridauth = new Hybrid_Auth($config_file_path);
     $adapter = $hybridauth->authenticate("Google");
     $user_profile = $adapter->getUserProfile();
-    echo $adapter->getAccessToken();
+    var_dump($adapter->getAccessToken());
     print_details($user_profile);
     return 'Google!!!';
 });
