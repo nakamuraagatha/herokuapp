@@ -48,16 +48,16 @@ $app->put('api/quote/{id}', controller('quote/update'))->before($authorize);
 $app->delete('api/quote/{id}', controller('quote/delete'))->before($authorize);
 
 
-$app->error(function (\Exception $e, $code) use($app) {
-    switch ($code) {
-        case 404:
-            $message = $app['twig']->render('error404.twig');
-            break;
-        default:
-            $message = $app['twig']->render('error500.twig');
-    }
-    return new Response($message, $code);
-});
+//$app->error(function (\Exception $e, $code) use($app) {
+//    switch ($code) {
+//        case 404:
+//            $message = $app['twig']->render('error404.twig');
+//            break;
+//        default:
+//            $message = $app['twig']->render('error500.twig');
+//    }
+//    return new Response($message, $code);
+//});
 $app->run();
 /*
     $start = new MongoDate(strtotime("2010-01-15 00:00:00"));

@@ -2,7 +2,7 @@
 
 function local_configs($key) {
 
-    $prod_mode = getenv('MODE_PROD') ? getenv('MODE_PROD') : FALSE;
+    $prod_mode = getenv('MODE_PROD') ? getenv('MODE_PROD') : TRUE;
 
     $configs = array(
         'MONGO_URI' => "mongodb://localhost:27017/heroku",
@@ -19,6 +19,8 @@ function auth_configs() {
     $fb_secret = getenv('FB_SECRET');
     $gplus_id = getenv('GPLUS_ID');
     $gplus_secret = getenv('GPLUS_SECRET');
+    echo $fb_id;
+    echo $fb_secret;
     return array(
         "base_url" => "http://ajaymore.herokuapp.com/hybridauth.php",
         "providers" => array(
