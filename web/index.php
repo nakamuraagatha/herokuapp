@@ -32,7 +32,6 @@ $authorize = function (Request $request, Application $app) {
 };
 // Routes
 $app->get('/', controller('home/index'));
-$app->get('/env', controller('home/env'));
 $app->get('/login', controller('home/login'));
 $app->get('/logout', controller('home/logout'));
 $app->get('/auth/{provider}', controller('home/auth'));
@@ -49,16 +48,16 @@ $app->put('api/quote/{id}', controller('quote/update'))->before($authorize);
 $app->delete('api/quote/{id}', controller('quote/delete'))->before($authorize);
 
 
-//$app->error(function (\Exception $e, $code) use($app) {
-//    switch ($code) {
-//        case 404:
-//            $message = $app['twig']->render('error404.twig');
-//            break;
-//        default:
-//            $message = $app['twig']->render('error500.twig');
-//    }
-//    return new Response($message, $code);
-//});
+$app->error(function (\Exception $e, $code) use($app) {
+    switch ($code) {
+        case 404:
+            $message = $app['twig']->render('error404.twig');
+            break;
+        default:
+            $message = $app['twig']->render('error500.twig');
+    }
+    return new Response($message, $code);
+});
 $app->run();
 /*
     $start = new MongoDate(strtotime("2010-01-15 00:00:00"));

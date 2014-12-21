@@ -6,22 +6,6 @@ use Silex\Application;
 
 class HomeController {
 
-    public function envAction(Application $app) {
-        $fb_id = getenv('FB_ID');
-        $fb_secret = getenv('FB_SECRET');
-        $gplus_id = getenv('GPLUS_ID');
-        $gplus_secret = getenv('GPLUS_SECRET');
-        echo getenv('MODE_PROD');
-        echo getenv('MONGO_URI');
-        echo getenv('MONGO_DB');
-        echo getenv('APP_URL');
-        echo $fb_id;
-        echo $fb_secret;
-        echo $gplus_id;
-        echo $gplus_secret;
-        return 'Hello';
-    }
-
     public function indexAction(Application $app) {
         $app['monolog']->addDebug('logging output.');
         $user = $app['session']->get('user');

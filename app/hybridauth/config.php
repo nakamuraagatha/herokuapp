@@ -27,12 +27,12 @@ return
                 "Google" => array(
                     "enabled" => true,
                     "keys" => array(
-                        "id" => "526115007499-jm0nrgu9j3g1mnv3r4jv3p9v2o2lm1c3.apps.googleusercontent.com",
-                        "secret" => "N38f104bBGikj0Fa-tvxV0U-"),
+                        "id" => "",
+                        "secret" => ""),
                 ),
                 "Facebook" => array(
                     "enabled" => true,
-                    "keys" => array("id" => "384541095042102", "secret" => "bef0d1d0fed3ba57cc58182e6d42f6ea"),
+                    "keys" => array("id" => "", "secret" => ""),
                     "trustForwarded" => false
                 ),
                 "Twitter" => array(
