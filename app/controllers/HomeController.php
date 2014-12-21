@@ -32,6 +32,7 @@ class HomeController {
     }
 
     public function authAction($provider, Application $app) {
+
         if (in_array(ucfirst($provider), array("Facebook", "Google"))) {
             if (!local_configs('MODE_PROD')) {
                 $user = array('access_token' => 'DEccdXX223', 'displayName' => 'Klus Klax Klan');

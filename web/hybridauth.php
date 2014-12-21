@@ -9,7 +9,6 @@
 //	HybridAuth End Point
 // ------------------------------------------------------------------------
 
-require_once( __DIR__ . "/../hybridauth/Hybrid/Auth.php" );
-require_once( __DIR__ . "/../hybridauth/Hybrid/Endpoint.php" );
+require('../vendor/autoload.php');
 
 Hybrid_Endpoint::process();

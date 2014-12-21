@@ -11,7 +11,7 @@
 
 return
         array(
-            "base_url" => "http://ajaymore.herokuapp.com/hybridauth.php",
+            "base_url" => "http://mystical.com/hybridauth.php",
             "providers" => array(
                 // openid providers
                 "OpenID" => array(
