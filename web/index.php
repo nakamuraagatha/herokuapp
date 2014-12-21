@@ -32,6 +32,7 @@ $authorize = function (Request $request, Application $app) {
 };
 // Routes
 $app->get('/', controller('home/index'));
+$app->get('/env', controller('home/env'));
 $app->get('/login', controller('home/login'));
 $app->get('/logout', controller('home/logout'));
 $app->get('/auth/{provider}', controller('home/auth'));

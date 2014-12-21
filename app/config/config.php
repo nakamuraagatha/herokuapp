@@ -19,8 +19,6 @@ function auth_configs() {
     $fb_secret = getenv('FB_SECRET');
     $gplus_id = getenv('GPLUS_ID');
     $gplus_secret = getenv('GPLUS_SECRET');
-    echo $fb_id;
-    echo $fb_secret;
     return array(
         "base_url" => "http://ajaymore.herokuapp.com/hybridauth.php",
         "providers" => array(
