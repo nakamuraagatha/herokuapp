@@ -1,0 +1,11 @@
+.ctg-list {
+
+}
+.ctg-list li{
+    list-style: none;
+}
+
+.ctg-list li span{
+    cursor: default;
+    vertical-align: middle;
+}

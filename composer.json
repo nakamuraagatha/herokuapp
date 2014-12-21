@@ -16,5 +16,14 @@
     },
     "require-dev": {
         "heroku/heroku-buildpack-php": "*"
+    },
+    "autoload": {
+        "classmap": [
+            "app/hybridauth/Hybrid",
+            "app/controllers"
+        ],
+        "files": [
+            "app/config/config.php"
+        ]
     }
 }

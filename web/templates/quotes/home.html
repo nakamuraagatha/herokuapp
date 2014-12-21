@@ -1,0 +1,22 @@
+<header class="row">
+    <div class="col-lg-offset-4 col-lg-4" ng-click="showCreate = !showCreate"><button class="btn btn-primary">Add</button></div>
+    <div class="col-lg-4"><a href="/logout" class="btn btn-link">Logout</a></div>
+</header>
+<div ng-show="showCreate">
+    <form>
+        <input class="form-control" type="text" placeholder="Category name" ng-model="newCtgText">
+        <button class="btn" ng-click="createCategory()">Create</button>
+    </form>
+</div>
+<ul class="ctg-list">
+    <li ng-repeat="ctg in ctgs">
+        <span ng-show="!saving[$index]" ng-click="showQuotes($index)">{{ctg.name}}</span>
+        <input class="form-control" type="text" ng-model="ctg.name" ng-show="saving[$index]">
+        <button ng-show="!saving[$index]" class="btn btn-primary" ng-click="editCategory($index)">Edit</button>
+        <button ng-show="saving[$index]" class="btn btn-success" ng-click="saveCategory($index)">Save</button>
+        <button class="btn btn-danger" ng-click="deleteCategory($index)">Delete</button>
+    </li>
+</ul>
+<footer id="footer" class="row">
+    <p class="col-lg-12">&copy; Copyright 2014 by <a href="http://vagabondme.com/">Ajay More</a></p>
+</footer>

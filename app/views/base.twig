@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width initial-scale=1" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <base href="/">
+        {% block head %}
+            <title>{% block title %}{% endblock %}</title>
+        {% endblock %}
+    </head>
+    <body ng-app="myApp">
+
+        <header>{% block header %}{% endblock%}</header>
+
+        <div id="content">{% block content %}{% endblock %}</div>
+        <footer id="footer">
+            {% block footer %}
+                &copy; Copyright 2014 by <a href="http://vagabondme.com/">Ajay More</a>
+            {% endblock %}
+        </footer>
+        {% block scripts %}
+        {% endblock %}
+    </body>
+</html>
