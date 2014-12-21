@@ -16,7 +16,11 @@ class CategoryController {
         $options = array("connectTimeoutMS" => 30000);
         $connection = new MongoClient($uri, $options);
         $database = $connection->selectDB($db);
-        $this->ctgs = $database->selectCollection($this->collection);
+        if ($database->system->namespaces->findOne(array('name' => $db . "." . $this->collection)) === null) {
+            $this->ctgs = $database->createCollection($this->collection);
+        } else {
+            $this->ctgs = $database->selectCollection($this->collection);
+        }
     }
 
     public function createAction(Application $app, Request $request) {
