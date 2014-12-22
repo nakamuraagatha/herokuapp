@@ -25,11 +25,8 @@ class CategoryController {
 
     public function createAction(Application $app, Request $request) {
         try {
-            $request_data = json_decode($request->getContent(), true);
-            $category = array(
-                'name' => $request_data['name'],
-                'saved_at' => new MongoDate()
-            );
+            $category = json_decode($request->getContent(), true);
+            $category['saved_at'] = new MongoDate();
             $this->ctgs->insert($category);
             return $app->json($category, 201);
         } catch (MongoConnectionException $e) {

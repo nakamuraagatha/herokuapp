@@ -1,3 +1,4 @@
+var x;
 var myApp = angular.module('myApp', ['ngRoute', 'ngProgress']);
 myApp.config(['$routeProvider', function ($routeProvider) {
         $routeProvider
@@ -11,28 +12,42 @@ myApp.config(['$routeProvider', function ($routeProvider) {
                 });
 
     }]).factory('ctgId', [function () {
-        var ctgId = "";
+        var ctgId, ctgObject;
         function setCtgId($ctgId) {
             ctgId = $ctgId;
         }
         function getCtgId() {
             return ctgId;
         }
-        return {
-            getCtgId: getCtgId,
-            setCtgId: setCtgId
-        };
-    }]).directive('colorMe', [function () {
-        function link(scope, element, attrs) {
-            var colors = ["#000000", "#795548", "#4CAF50", "#009688", "#673AB7", "#FF5722", "#F44336"];
-            var randomColor = colors[Math.floor(Math.random() * colors.length)];
-            element.css('color', randomColor);
+        function getCtgObject() {
+            return ctgObject;
+        }
+        function setCtgObject($ctgObject) {
+            ctgObject = $ctgObject;
         }
         return {
-            link: link
+            getCtgId: getCtgId,
+            setCtgId: setCtgId,
+            getCtgObject: getCtgObject,
+            setCtgObject: setCtgObject
         };
-    }]).controller('HomeCtrl', ['$scope', '$http', 'ngProgress', '$location', 'ctgId',
+    }]).filter()
+        .directive('colorMe', [function () {
+                function link(scope, element, attrs) {
+                    var colors = ["#000000", "#795548", "#4CAF50", "#009688", "#673AB7", "#FF5722", "#F44336"];
+                    var randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    element.css('color', randomColor);
+                }
+                return {
+                    link: link
+                };
+            }]).controller('HomeCtrl', ['$scope', '$http', 'ngProgress', '$location', 'ctgId',
     function ($scope, $http, ngProgress, $location, ctgId) {
+        if (typeof ctgId.getCtgObject() !== 'undefined') {
+            if (ctgId.getCtgObject().isAuthor) {
+                $scope.showAuthors = true;
+            }
+        }
         ngProgress.start();
         var promise = $http.get('/userDetails').success(function (data, status, headers, config) {
             $http.defaults.headers.common.Authorization = data.api_key;
@@ -43,10 +58,19 @@ myApp.config(['$routeProvider', function ($routeProvider) {
 
         promise.then(function () {
             $http.get('api/category').success(function (data, status, headers, config) {
-                $scope.ctgs = [];
+                var dataArray = [];
                 angular.forEach(data, function (value, key) {
                     this.push(value);
-                }, $scope.ctgs);
+                }, dataArray);
+                x = $scope.ctgs;
+                $scope.ctgs = $.map(dataArray, function (val) {
+                    if (val.type === "ctg")
+                        return val;
+                });
+                $scope.authors = $.map(dataArray, function (val) {
+                    if (val.type === "author")
+                        return val;
+                });
                 ngProgress.complete();
             }).error(function (data, status, headers, config) {
                 console.log(status);
@@ -56,28 +80,21 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         }, function (update) {
             console.log('Got notification: ' + update);
         });
-
-        $scope.$watch('ctgs', function (val) {
-            console.log('changed.');
-            var lis = $('.ctg-list li');
-            for (var i = 0; i < lis.length; i += 2) {
-                var evenHeight = $(lis[i]).height(),
-                        oddHeight = $(lis[i + 1]).height();
-                var setHeight = (evenHeight > oddHeight) ? evenHeight : oddHeight;
-                $(lis[i]).height(setHeight);
-                $(lis[i + 1]).height(setHeight);
-            }
-        });
-
         $scope.createCategory = function () {
+            var ctgType = $scope.showAuthors ? "author" : "ctg";
             ngProgress.start();
             $http.post('api/category',
                     {
-                        'name': $scope.newCtgText
+                        'name': $scope.newCtgText,
+                        'type': ctgType
                     }
             ).success(function (data, status, headers, config) {
                 ngProgress.complete();
-                $scope.ctgs.push(data);
+                if (ctgType === "ctg") {
+                    $scope.ctgs.push(data);
+                } else {
+                    $scope.authors.push(data);
+                }
                 $scope.showCreate = false;
                 $scope.newCtgText = "";
             }).error(function (data, status, headers, config) {
@@ -87,22 +104,45 @@ myApp.config(['$routeProvider', function ($routeProvider) {
 
         $scope.saveCategory = function (index) {
             ngProgress.start();
-            $http.put('api/category/' + $scope.ctgs[index]._id.$id,
-                    {
-                        'name': $scope.ctgs[index].name
-                    }
-            ).success(function (data, status, headers, config) {
+            var id, request;
+            if ($scope.showAuthors) {
+                id = $scope.authors[index]._id.$id;
+                request = {
+                    'name': $scope.authors[index].name,
+                    'type': $scope.authors[index].type
+                };
+            } else {
+                id = $scope.ctgs[index]._id.$id;
+                request = {
+                    'name': $scope.ctgs[index].name,
+                    'type': $scope.ctgs[index].type
+                };
+            }
+            $http.put('api/category/' + id, request
+                    ).success(function (data, status, headers, config) {
                 ngProgress.complete();
-                data._id = {$id: $scope.ctgs[index]._id.$id};
-                $scope.ctgs[index] = data;
-                $scope.saving[index] = false;
+                if ($scope.showAuthors) {
+                    data._id = {$id: $scope.authors[index]._id.$id};
+                    $scope.authors[index] = data;
+                    $scope.saving_author[index] = false;
+                } else {
+                    data._id = {$id: $scope.ctgs[index]._id.$id};
+                    $scope.ctgs[index] = data;
+                    $scope.saving[index] = false;
+                }
+
             }).error(function (data, status, headers, config) {
                 console.log(status);
             });
         };
         $scope.saving = [];
+        $scope.saving_author = [];
         $scope.editCategory = function (index) {
-            $scope.saving[index] = true;
+            if ($scope.showAuthors) {
+                $scope.saving_author[index] = true;
+            } else {
+                $scope.saving[index] = true;
+            }
         };
 
         $scope.deleteCategory = function (index) {
@@ -120,11 +160,21 @@ myApp.config(['$routeProvider', function ($routeProvider) {
             function (isConfirm) {
                 if (isConfirm) {
                     ngProgress.start();
-                    $http.delete('api/category/' + $scope.ctgs[index]._id.$id, {}
+                    var id;
+                    if ($scope.showAuthors) {
+                        id = $scope.authors[index]._id.$id;
+                    } else {
+                        id = $scope.ctgs[index]._id.$id;
+                    }
+                    $http.delete('api/category/' + id, {}
                     ).success(function (data, status, headers, config) {
                         ngProgress.complete();
                         if (data === "Successsfully Deleted!") {
-                            $scope.ctgs.splice(index, 1);
+                            if ($scope.showAuthors) {
+                                $scope.authors.splice(index, 1);
+                            } else {
+                                $scope.ctgs.splice(index, 1);
+                            }
                             swal("Deleted!", "Your category has been deleted.", "success");
                         }
                     }).error(function (data, status, headers, config) {
@@ -138,7 +188,13 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         };
 
         $scope.showQuotes = function (index) {
-            ctgId.setCtgId($scope.ctgs[index]._id.$id);
+            if ($scope.showAuthors) {
+                ctgId.setCtgId($scope.authors[index]._id.$id);
+                ctgId.setCtgObject({name: $scope.authors[index].name, isAuthor: true});
+            } else {
+                ctgId.setCtgId($scope.ctgs[index]._id.$id);
+                ctgId.setCtgObject({name: $scope.authors[index].name, isAuthor: false});
+            }
             $location.path('/quotes');
         };
 
@@ -147,6 +203,15 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         };
     }]).controller('QuoteCtrl', ['$scope', 'ctgId', '$http', 'ngProgress', '$location',
     function ($scope, ctgId, $http, ngProgress, $location) {
+        if (typeof ctgId.getCtgObject() === 'undefined') {
+            $location.path('/');
+            return;
+        }
+        if (ctgId.getCtgObject().isAuthor) {
+            $scope.quoteTitleText = "Quotes by " + ctgId.getCtgObject().name;
+        } else {
+            $scope.quoteTitleText = "Quotes for " + ctgId.getCtgObject().name;
+        }
         $http.get('api/quote/' + ctgId.getCtgId()).success(function (data, status, headers, config) {
             $scope.quotes = [];
             angular.forEach(data, function (value, key) {

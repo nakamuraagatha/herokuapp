@@ -15,6 +15,9 @@
             </ul>
         </div>
     </header>
+    <div class="row quote-title">
+        <h4>{{quoteTitleText}}</h4>
+    </div>
     <div ng-show="showCreate">
         <form class="form-create">
             <textarea class="form-control" type="text" placeholder="Quote text..." ng-model="newQuoteText">
@@ -25,7 +28,7 @@
     </div>
 
     <ul class="ctg-list-q row">
-        <li ng-repeat="quote in quotes">
+        <li ng-repeat="quote in quotes" class="col-sm-12">
             <blockquote ng-show="!saving[$index]">
                 <p>
                     <span ng-click="showQuotes($index)" color-me>{{quote.text}}</span>
