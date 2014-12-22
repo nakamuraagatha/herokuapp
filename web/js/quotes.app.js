@@ -193,7 +193,7 @@ myApp.config(['$routeProvider', function ($routeProvider) {
                 ctgId.setCtgObject({name: $scope.authors[index].name, isAuthor: true});
             } else {
                 ctgId.setCtgId($scope.ctgs[index]._id.$id);
-                ctgId.setCtgObject({name: $scope.authors[index].name, isAuthor: false});
+                ctgId.setCtgObject({name: $scope.ctgs[index].name, isAuthor: false});
             }
             $location.path('/quotes');
         };
