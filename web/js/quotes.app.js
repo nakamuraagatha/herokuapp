@@ -210,7 +210,7 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         if (ctgId.getCtgObject().isAuthor) {
             $scope.quoteTitleText = "Quotes by " + ctgId.getCtgObject().name;
         } else {
-            $scope.quoteTitleText = "Quotes for " + ctgId.getCtgObject().name;
+            $scope.quoteTitleText = "Quotes on " + ctgId.getCtgObject().name;
         }
         $http.get('api/quote/' + ctgId.getCtgId()).success(function (data, status, headers, config) {
             $scope.quotes = [];
