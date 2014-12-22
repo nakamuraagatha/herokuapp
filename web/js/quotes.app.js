@@ -209,6 +209,8 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         }
         if (ctgId.getCtgObject().isAuthor) {
             $scope.quoteTitleText = "Quotes by " + ctgId.getCtgObject().name;
+            $scope.isAuthor = true;
+            $scope.newQuoteAuthor = ctgId.getCtgObject().name;
         } else {
             $scope.quoteTitleText = "Quotes on " + ctgId.getCtgObject().name;
         }
@@ -236,7 +238,11 @@ myApp.config(['$routeProvider', function ($routeProvider) {
                 $scope.quotes.push(data);
                 $scope.showCreate = false;
                 $scope.newQuoteText = "";
-                $scope.newQuoteAuthor = "";
+                if (ctgId.getCtgObject().isAuthor) {
+                    $scope.newQuoteAuthor = ctgId.getCtgObject().name;
+                }else{                    
+                    $scope.newQuoteAuthor = "";
+                }
             }).error(function (data, status, headers, config) {
                 console.log(status);
             });

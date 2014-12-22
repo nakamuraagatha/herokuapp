@@ -22,13 +22,18 @@
         <form class="form-create">
             <textarea class="form-control" type="text" placeholder="Quote text..." ng-model="newQuoteText">
             </textarea>
-            <input class="form-control" type="text" placeholder="Author" ng-model="newQuoteAuthor">
+            <input ng-show="!isAuthor" class="form-control" type="text" placeholder="Author" ng-model="newQuoteAuthor">
             <button class="btn" ng-click="createQuote()">Create</button>
         </form>
     </div>
 
     <ul class="ctg-list-q row">
         <li ng-repeat="quote in quotes" class="col-sm-12">
+            <div class="actions">
+                <button ng-show="!saving[$index]" class="btn btn-link" ng-click="editQuote($index)">Edit</button>
+                <button ng-show="saving[$index]" class="btn btn-link" ng-click="saveQuote($index)" type="submit">Save</button>
+                <button class="btn btn-link" ng-click="deleteQuote($index)">Delete</button>
+            </div>
             <blockquote ng-show="!saving[$index]">
                 <p>
                     <span ng-click="showQuotes($index)" color-me>{{quote.text}}</span>
@@ -38,12 +43,7 @@
                 </p>
             </blockquote>
             <input class="form-control" type="text" ng-model="quote.text" ng-show="saving[$index]">
-            <input class="form-control" type="text" ng-model="quote.author" ng-show="saving[$index]">
-            <div class="actions">
-                <button ng-show="!saving[$index]" class="btn btn-link" ng-click="editQuote($index)">Edit</button>
-                <button ng-show="saving[$index]" class="btn btn-link" ng-click="saveQuote($index)" type="submit">Save</button>
-                <button class="btn btn-link" ng-click="deleteQuote($index)">Delete</button>
-            </div>
+            <input class="form-control" type="text" ng-model="quote.author" ng-show="saving[$index] &&  !isAuthor">
         </li>
     </ul>
     <footer id="footer" class="row">
