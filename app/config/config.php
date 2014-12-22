@@ -2,7 +2,7 @@
 
 function local_configs($key) {
 
-    $prod_mode = getenv('MODE_PROD') ? getenv('MODE_PROD') : TRUE;
+    $prod_mode = getenv('MODE_PROD') ? getenv('MODE_PROD') : FALSE;
 
     $configs = array(
         'MONGO_URI' => "mongodb://localhost:27017/heroku",

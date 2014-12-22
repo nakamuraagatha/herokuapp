@@ -1,11 +1,64 @@
-.ctg-list {
-
+.ctg-list, .ctg-list-q{
+    padding-left: 0;
 }
 .ctg-list li{
     list-style: none;
+    border-bottom: 1px solid grey;
 }
-
-.ctg-list li span{
+.ctg-list-q li{
+    list-style: none;
+}
+.ctg-list li h3{
     cursor: default;
     vertical-align: middle;
+    font-family: 'Lato';
+    font-style: italic;
+    font-weight: 900;
+}
+
+ul.nav{
+    margin-right: 20px;
+}
+
+.form-create{
+    text-align: center;
+}
+.form-create button{
+    margin: 20px;
+    width: 200px;
+}
+.form-create input{
+    margin: 20px 0;
+}
+li .actions{
+    text-align: right;
+    margin-top: 23px;
+}
+blockquote {
+    font-family: 'Lato';
+    color: #767676;
+    font-size: 19px;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.2631578947;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-left: none;
+    text-align: center;
+    font-size: 2.3em;
+}
+blockquote cite {
+    display: block;
+    text-align: right;
+    font-weight: 700;
+    padding-top: 5px;
+    color: #24890d;
+    font-size: 0.8em;
+}
+.navbar-brand{
+    cursor: pointer;
+}
+@media (max-width: 500px) {
+}
+@media (max-width: 360px) {
 }

@@ -1,22 +1,38 @@
-<header class="row">
-    <div class="col-lg-offset-4 col-lg-4" ng-click="showCreate = !showCreate"><button class="btn btn-primary">Add</button></div>
-    <div class="col-lg-4"><a href="/logout" class="btn btn-link">Logout</a></div>
-</header>
-<div ng-show="showCreate">
-    <form>
-        <input class="form-control" type="text" placeholder="Category name" ng-model="newCtgText">
-        <button class="btn" ng-click="createCategory()">Create</button>
-    </form>
+<div class="container">
+    <header class="navbar navbar-default row">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" ng-click="getHome()">Quotes App</a>
+        </div>
+        <div class="navbar-collapse navbar-responsive-collapse collapse" aria-expanded="false" style="height: 1px;">
+            <ul class="nav navbar-nav  navbar-right">
+                <li><a class="btn btn-link" ng-click="showCreate = !showCreate">Add</a></li>
+                <li><a href="/logout" class="btn btn-link">Logout</a></li>
+            </ul>
+        </div>
+    </header>
+    <div ng-show="showCreate" class="row form-create">
+        <form class="col-sm-12">
+            <input class="form-control" type="text" placeholder="Category name" ng-model="newCtgText">
+            <button class="btn" ng-click="createCategory()">Create</button>
+        </form>
+    </div>
+    <ul class="ctg-list row">
+        <li ng-repeat="ctg in ctgs" class="col-sm-12">
+            <h3 ng-show="!saving[$index]" class="col-sm-10 col-sm-12"
+                ng-click="showQuotes($index)" color-me>{{ctg.name| limitTo:50}}</h3>
+            <input class="form-control col-lg-10 col-sm-12" type="text" ng-model="ctg.name" ng-show="saving[$index]">
+            <div class="actions">
+                <button ng-show="!saving[$index]" class="btn btn-link" ng-click="editCategory($index)">Edit</button>
+                <button ng-show="saving[$index]" class="btn btn-link" ng-click="saveCategory($index)">Save</button>
+                <button class="btn btn-link" ng-click="deleteCategory($index)">Delete</button>
+            </div>
+        </li>
+    </ul>
+    <footer id="footer" class="row">
+    </footer>
 </div>
-<ul class="ctg-list">
-    <li ng-repeat="ctg in ctgs">
-        <span ng-show="!saving[$index]" ng-click="showQuotes($index)">{{ctg.name}}</span>
-        <input class="form-control" type="text" ng-model="ctg.name" ng-show="saving[$index]">
-        <button ng-show="!saving[$index]" class="btn btn-primary" ng-click="editCategory($index)">Edit</button>
-        <button ng-show="saving[$index]" class="btn btn-success" ng-click="saveCategory($index)">Save</button>
-        <button class="btn btn-danger" ng-click="deleteCategory($index)">Delete</button>
-    </li>
-</ul>
-<footer id="footer" class="row">
-    <p class="col-lg-12">&copy; Copyright 2014 by <a href="http://vagabondme.com/">Ajay More</a></p>
-</footer>

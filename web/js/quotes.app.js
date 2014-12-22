@@ -22,6 +22,15 @@ myApp.config(['$routeProvider', function ($routeProvider) {
             getCtgId: getCtgId,
             setCtgId: setCtgId
         };
+    }]).directive('colorMe', [function () {
+        function link(scope, element, attrs) {
+            var colors = ["#000000", "#795548", "#4CAF50", "#009688", "#673AB7", "#FF5722", "#F44336"];
+            var randomColor = colors[Math.floor(Math.random() * colors.length)];
+            element.css('color', randomColor);
+        }
+        return {
+            link: link
+        };
     }]).controller('HomeCtrl', ['$scope', '$http', 'ngProgress', '$location', 'ctgId',
     function ($scope, $http, ngProgress, $location, ctgId) {
         ngProgress.start();
@@ -46,6 +55,18 @@ myApp.config(['$routeProvider', function ($routeProvider) {
             console.log('Failed: ' + reason);
         }, function (update) {
             console.log('Got notification: ' + update);
+        });
+
+        $scope.$watch('ctgs', function (val) {
+            console.log('changed.');
+            var lis = $('.ctg-list li');
+            for (var i = 0; i < lis.length; i += 2) {
+                var evenHeight = $(lis[i]).height(),
+                        oddHeight = $(lis[i + 1]).height();
+                var setHeight = (evenHeight > oddHeight) ? evenHeight : oddHeight;
+                $(lis[i]).height(setHeight);
+                $(lis[i + 1]).height(setHeight);
+            }
         });
 
         $scope.createCategory = function () {
@@ -85,21 +106,44 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         };
 
         $scope.deleteCategory = function (index) {
-            ngProgress.start();
-            $http.delete('api/category/' + $scope.ctgs[index]._id.$id, {}
-            ).success(function (data, status, headers, config) {
-                ngProgress.complete();
-                if (data === "Successsfully Deleted!") {
-                    $scope.ctgs.splice(index, 1);
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this category and it's quotes!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    ngProgress.start();
+                    $http.delete('api/category/' + $scope.ctgs[index]._id.$id, {}
+                    ).success(function (data, status, headers, config) {
+                        ngProgress.complete();
+                        if (data === "Successsfully Deleted!") {
+                            $scope.ctgs.splice(index, 1);
+                            swal("Deleted!", "Your category has been deleted.", "success");
+                        }
+                    }).error(function (data, status, headers, config) {
+                        console.log(status);
+                    });
+                } else {
+//                    swal("Cancelled", "Your imaginary file is safe :)", "error");
+                    console.log('action cancelled');
                 }
-            }).error(function (data, status, headers, config) {
-                console.log(status);
             });
         };
 
         $scope.showQuotes = function (index) {
             ctgId.setCtgId($scope.ctgs[index]._id.$id);
             $location.path('/quotes');
+        };
+
+        $scope.getHome = function () {
+            $location.path('/');
         };
     }]).controller('QuoteCtrl', ['$scope', 'ctgId', '$http', 'ngProgress', '$location',
     function ($scope, ctgId, $http, ngProgress, $location) {
@@ -156,15 +200,39 @@ myApp.config(['$routeProvider', function ($routeProvider) {
         };
 
         $scope.deleteQuote = function (index) {
-            ngProgress.start();
-            $http.delete('api/quote/' + $scope.quotes[index]._id.$id, {}
-            ).success(function (data, status, headers, config) {
-                ngProgress.complete();
-                if (data === "Successsfully Deleted!") {
-                    $scope.quotes.splice(index, 1);
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this quote!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    ngProgress.start();
+                    $http.delete('api/quote/' + $scope.quotes[index]._id.$id, {}
+                    ).success(function (data, status, headers, config) {
+                        ngProgress.complete();
+                        if (data === "Successsfully Deleted!") {
+                            $scope.quotes.splice(index, 1);
+                            swal("Deleted!", "Your quote has been deleted.", "success");
+                        }
+                    }).error(function (data, status, headers, config) {
+                        console.log(status);
+                    });
+                } else {
+//                    swal("Cancelled", "Your imaginary file is safe :)", "error");
+                    console.log('action cancelled');
                 }
-            }).error(function (data, status, headers, config) {
-                console.log(status);
             });
+
+        };
+
+        $scope.getHome = function () {
+            $location.path('/');
         };
     }]);
