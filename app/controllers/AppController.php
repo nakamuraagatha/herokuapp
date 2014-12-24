@@ -33,6 +33,7 @@ class AppController {
     public function app_listAction(Application $app) {
         $user = $app['session']->get('user');
         $superUser = getenv('SUPER_EMAIL') ? getenv('SUPER_EMAIL') : local_configs('SUPER_EMAIL');
+        return $user['email'];
         if ($superUser != $user['email']) {
             return $app->redirect('/');
         }
