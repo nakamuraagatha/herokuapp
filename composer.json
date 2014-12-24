@@ -9,7 +9,6 @@
         }
     ],
     "require": {
-        "ext-mongo": "*",
         "silex/silex": "~1.1",
         "monolog/monolog": "~1.7",
         "twig/twig": "~1.0"
@@ -23,7 +22,8 @@
             "app/controllers"
         ],
         "files": [
-            "app/config/config.php"
+            "app/config/config.php",
+            "app/utils/validations.php"
         ]
     }
 }

@@ -9,6 +9,7 @@ class QuoteController {
 
     private $collection = "quotes";
     private $quotes;
+    private $app_name = "QuotesApp";
 
     function __construct() {
         $uri = getenv('MONGO_URI') ? getenv('MONGO_URI') : local_configs('MONGO_URI');
@@ -24,6 +25,10 @@ class QuoteController {
     }
 
     public function createAction(Application $app, Request $request) {
+        $permitted = $app['session']->get('permissions');
+        if (!is_api_authorized($permitted, $this->app_name, "write")) {
+            return $app->json("You are not authorized!", 400);
+        }
         try {
             $quote = json_decode($request->getContent(), true);
             $quote['saved_at'] = new MongoDate();
@@ -39,6 +44,10 @@ class QuoteController {
     }
 
     public function readAction($ctg, Application $app) {
+        $permitted = $app['session']->get('permissions');
+        if (!is_api_authorized($permitted, $this->app_name, "read")) {
+            return $app->json("You are not authorized!", 400);
+        }
         try {
             $cursor = $this->quotes->find(array("ctg_id" => $ctg));
             return $app->json(iterator_to_array($cursor), 200);
@@ -52,6 +61,10 @@ class QuoteController {
     }
 
     public function updateAction($id, Application $app, Request $request) {
+        $permitted = $app['session']->get('permissions');
+        if (!is_api_authorized($permitted, $this->app_name, "write")) {
+            return $app->json("You are not authorized!", 400);
+        }
         try {
             $quote = json_decode($request->getContent(), true);
             $quote['saved_at'] = new MongoDate();
@@ -69,6 +82,10 @@ class QuoteController {
     }
 
     public function deleteAction($id, Application $app) {
+        $permitted = $app['session']->get('permissions');
+        if (!is_api_authorized($permitted, $this->app_name, "write")) {
+            return $app->json("You are not authorized!", 400);
+        }
         try {
             $this->quotes->remove(array("_id" => new MongoId($id)));
             return $app->json("Successsfully Deleted!", 200);

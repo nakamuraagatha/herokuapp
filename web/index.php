@@ -30,14 +30,33 @@ $authorize = function (Request $request, Application $app) {
         return $app->json("Not authorized!", 401);
     }
 };
+$url_authorize = function (Request $request, Application $app) {
+    $user = $app['session']->get('user');
+    if (NULL == $user) {
+        return $app->redirect('/login');
+    }
+};
 // Routes
-$app->get('/', controller('home/index'));
-$app->get('/login', controller('home/login'));
-$app->get('/logout', controller('home/logout'));
-$app->get('/auth/{provider}', controller('home/auth'));
-$app->get('/userDetails', controller('home/userDetails'));
+$app->get('/', controller('auth/index'));
+$app->get('/login', controller('auth/login'));
+$app->get('/logout', controller('auth/logout'));
+$app->get('/auth/{provider}', controller('auth/auth'));
+$app->get('/userDetails/{appName}', controller('auth/user_details'));
+
+// Apps
+$app->get('/appList', controller('app/app_list'));
+$app->post('/appList', controller('app/app_create'));
+$app->delete('/appList', controller('app/app_delete'));
+
+// Users
+$app->get('/users', controller('users/index'));
+$app->get('api/usersList', controller('users/users_list'))->before($authorize);
+$app->get('api/appList', controller('users/app_list'))->before($authorize);
+$app->get('api/appPermissions/{appName}/{email}', controller('users/get_permissions'))->before($authorize);
+$app->post('api/appPermissions/{appName}/{email}', controller('users/set_permissions'))->before($authorize);
 
 // Quotes
+$app->get('/quotes-app', controller('category/index'))->before($url_authorize);
 $app->get('api/category', controller('category/read'))->before($authorize);
 $app->post('api/category', controller('category/create'))->before($authorize);
 $app->put('api/category/{id}', controller('category/update'))->before($authorize);

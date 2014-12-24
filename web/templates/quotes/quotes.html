@@ -10,7 +10,7 @@
         </div>
         <div class="navbar-collapse navbar-responsive-collapse collapse" aria-expanded="false" style="height: 1px;">
             <ul class="nav navbar-nav  navbar-right">
-                <li><a class="btn btn-link" ng-click="showCreate = !showCreate">Add</a></li>
+                <li ng-show="hasWriteAccess"><a class="btn btn-link" ng-click="showCreate = !showCreate">Add</a></li>
                 <li><a href="/logout" class="btn btn-link">Logout</a></li>
             </ul>
         </div>
@@ -29,7 +29,7 @@
 
     <ul class="ctg-list-q row">
         <li ng-repeat="quote in quotes" class="col-sm-12">
-            <div class="actions">
+            <div class="actions" ng-show="hasWriteAccess">
                 <button ng-show="!saving[$index]" class="btn btn-link" ng-click="editQuote($index)">Edit</button>
                 <button ng-show="saving[$index]" class="btn btn-link" ng-click="saveQuote($index)" type="submit">Save</button>
                 <button class="btn btn-link" ng-click="deleteQuote($index)">Delete</button>

@@ -1,0 +1,141 @@
+{% extends "base.twig" %}
+{% block title %}
+    Apps List
+{% endblock %}
+{% block head %}
+    {{parent()}}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <style>
+        .create-form{
+            border: 1px solid gainsboro;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        .app-list{
+            padding-left: 0;
+        }
+        .app-list li{
+            list-style: none;
+            margin: 15px 0;
+            padding: 15px 0;
+            border-bottom: 1px solid gainsboro;
+        }
+        footer{
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">Apps</a>
+                </div>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/logout">Logout</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+    </header>
+    <div class="container">
+        <form class="create-form">
+            <h3>Register App</h3>
+            <div class="form-group">
+                <input type="text" class="form-control" id="appName" name="appName" placeholder="Enter App Name">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="appUrl" name="appUrl" placeholder="Enter App URL">
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="defaultAppAccess" id="defaultAppAccess" checked="true"> Default App Access
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" name="defaultWriteAccess" id="defaultWriteAccess"> Default Write Access
+                </label>
+            </div>
+            <button type="submit" class="btn btn-default" id="submit">Submit</button>
+        </form>
+        <ul class="app-list row">
+            {% for app in apps %}
+                <li class="row">
+                    <a class="col-sm-10" href="{{app.app_url}}">{{ app.name }}</a>
+                    <button class="btn btn-danger col-sm-2" id="{{app._id}}">Delete</button>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
+{% block footer %}
+    {{parent()}}
+{% endblock %}
+{% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.4/zepto.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var deleteAjaxHandler = function () {
+                var id = $(this).attr('id');
+                var app_name = $(this).siblings('a').eq(0).text();
+                $.ajax({
+                    type: 'DELETE',
+                    url: '/appList',
+                    // post payload:
+                    data: JSON.stringify({"_id": id, "name": app_name}),
+                    contentType: 'application/json',
+                    success: function (data) {
+                        $('#' + id).parent().remove();
+                    },
+                    error: function (xhr, type) {
+                        alert('Ajax error!')
+                    }
+                });
+            }
+            $('#submit').on('click', function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: 'POST',
+                    url: '/appList',
+                    // post payload:
+                    data: JSON.stringify(
+                            {
+                                "name": $('#appName').val(),
+                                "app_url": $('#appUrl').val(),
+                                "defaultAppAccess": $('#defaultAppAccess').prop('checked'),
+                                "defaultWriteAccess": $('#defaultWriteAccess').prop('checked')
+                            }),
+                    contentType: 'application/json',
+                    success: function (data) {
+                        var newElm = $('<li class="row"></li>');
+                        newElm.append('<a class="col-sm-10" href="' + data.app_url + '">' + data.name + '</a>');
+                        var button = $('<button class="btn btn-danger" id="' + data._id.$id + '">Delete</button>');
+                        button.click(deleteAjaxHandler);
+                        button.addClass('col-sm-2');
+                        newElm.append(button);
+                        $('.app-list').append(newElm);
+                        $('#appName').val("");
+                        $('#appUrl').val("");
+                        $('#defaultAppAccess').prop('checked', false);
+                        $('#defaultWriteAccess').prop('checked', false);
+                    },
+                    error: function (xhr, type) {
+                        alert('Ajax error!')
+                    }
+                });
+            });
+            $('.btn-danger').on('click', deleteAjaxHandler);
+        });
+    </script>
+{% endblock %}

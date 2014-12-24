@@ -8,7 +8,8 @@ function local_configs($key) {
         'MONGO_URI' => "mongodb://localhost:27017/heroku",
         'MONGO_DB' => "heroku",
         'MODE_PROD' => $prod_mode,
-        'APP_URL' => "http://mystical.com/"
+        'APP_URL' => "http://mystical.com/",
+        'SUPER_EMAIL' => "abc@xyz.com"
     );
 
     return $configs[$key];

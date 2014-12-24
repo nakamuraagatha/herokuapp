@@ -8,18 +8,22 @@
         {% block head %}
             <title>{% block title %}{% endblock %}</title>
         {% endblock %}
+        <style>
+            footer{
+                padding: 20px;
+                text-align: center;
+            }
+        </style>
     </head>
     <body ng-app="myApp">
 
-        <header>{% block header %}{% endblock%}</header>
-
-        <div id="content">{% block content %}{% endblock %}</div>
-        <footer id="footer">
-            {% block footer %}
-                &copy; Copyright 2014 by &nbsp;<a href="http://vagabondme.com/">Ajay More</a>
-            {% endblock %}
-        </footer>
-        {% block scripts %}
+    {% block content %}{% endblock %}
+    <footer id="footer">
+        {% block footer %}
+            &copy; Copyright 2014 by &nbsp;<a href="http://vagabondme.com/">Ajay More</a>
         {% endblock %}
-    </body>
+    </footer>
+    {% block scripts %}
+    {% endblock %}
+</body>
 </html>

@@ -9,6 +9,7 @@ class CategoryController {
 
     private $collection = "ctgs";
     private $ctgs;
+    private $app_name = "QuotesApp";
 
     function __construct() {
         $uri = getenv('MONGO_URI') ? getenv('MONGO_URI') : local_configs('MONGO_URI');
@@ -23,7 +24,21 @@ class CategoryController {
         }
     }
 
+    public function indexAction(Application $app) {
+        $user = $app['session']->get('user');
+        $permitted = $app['session']->get('permissions');
+        if (is_api_authorized($permitted, $this->app_name, "read")) {
+            return $app['twig']->render('quotes.twig', array('user' => $user));
+        } else {
+            return $app->redirect("/");
+        }
+    }
+
     public function createAction(Application $app, Request $request) {
+        $permitted = $app['session']->get('permissions');
+        if (!is_api_authorized($permitted, $this->app_name, "write")) {
+            return $app->json("You are not authorized!", 400);
+        }
         try {
             $category = json_decode($request->getContent(), true);
             $category['saved_at'] = new MongoDate();
@@ -39,6 +54,10 @@ class CategoryController {
     }
 
     public function readAction(Application $app) {
+        $permitted = $app['session']->get('permissions');
+        if (!is_api_authorized($permitted, $this->app_name, "read")) {
+            return $app->json("You are not authorized!", 400);
+        }
         try {
             $cursor = $this->ctgs->find();
             return $app->json(iterator_to_array($cursor), 200);
@@ -52,6 +71,10 @@ class CategoryController {
     }
 
     public function updateAction($id, Application $app, Request $request) {
+        $permitted = $app['session']->get('permissions');
+        if (!is_api_authorized($permitted, $this->app_name, "write")) {
+            return $app->json("You are not authorized!", 400);
+        }
         try {
             $category = json_decode($request->getContent(), true);
             $category['saved_at'] = new MongoDate();
@@ -69,6 +92,10 @@ class CategoryController {
     }
 
     public function deleteAction($id, Application $app) {
+        $permitted = $app['session']->get('permissions');
+        if (!is_api_authorized($permitted, $this->app_name, "write")) {
+            return $app->json("You are not authorized!", 400);
+        }
         try {
             $this->ctgs->remove(array("_id" => new MongoId($id)));
             return $app->json("Successsfully Deleted!", 200);
