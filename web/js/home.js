@@ -5,8 +5,8 @@ myApp.config(function ($interpolateProvider) {
 
 myApp.controller('AppCtrl', ['$scope', '$window', '$http', function ($scope, $window, $http) {
     var tokenEle = document.getElementById('token');
-    var token = tokenEle.innerText;
-    tokenEle.innerText = "";
+    var token = tokenEle.innerHTML;
+    tokenEle.innerHTML = "";
     if (token === 'empty' && $window.sessionStorage.token === 'undefined') {
         window.location = '/login';
     } else if (token === 'empty' && $window.sessionStorage.token) {

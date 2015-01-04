@@ -59,7 +59,7 @@ class QuoteController
 
         $quote = $this->quotes_model->update_quote($quote, $id);
 
-        return $app->json($quote, 201);
+        return $app->json($quote, 200);
     }
 
     public function deleteAction($id, Application $app, Request $request)

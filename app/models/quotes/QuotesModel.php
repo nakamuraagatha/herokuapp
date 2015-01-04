@@ -35,6 +35,7 @@ class QuotesModel
         $this->quotes->update(
             array("_id" => new MongoId($id)), array('$set' => $quote)
         );
+        return $quote;
     }
 
     public function delete_quote($id)
