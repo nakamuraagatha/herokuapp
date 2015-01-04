@@ -33,7 +33,8 @@ myApp.config(['$routeProvider', function ($routeProvider) {
             });
             ngProgress.complete();
         }).error(function (data, status, headers, config) {
-            console.log(status);
+            window.location = "/";
+            return;
         });
     }, function (reason) {
         console.log('Failed: ' + reason);

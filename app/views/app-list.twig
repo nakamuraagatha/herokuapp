@@ -110,7 +110,7 @@
                     });
                 },
                 error: function (xhr, type) {
-                    alert('Ajax error!')
+                    window.location = "/";
                 }
             });
             var deleteAjaxHandler = function () {
@@ -129,7 +129,7 @@
                         $('#' + id).parent().remove();
                     },
                     error: function (xhr, type) {
-                        alert('Ajax error!')
+                        console.log('error');
                     }
                 });
             }
@@ -164,7 +164,7 @@
                         $('#defaultWriteAccess').prop('checked', false);
                     },
                     error: function (xhr, type) {
-                        alert('Ajax error!')
+                        console.log('error');
                     }
                 });
             });
