@@ -5,12 +5,13 @@
     {{ parent() }}
     <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
     <style type="text/css">
-        body{
+        body {
             text-align: center;
-            text-shadow: 0 1px 0 rgba(0,0,0,.1);
+            text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
             background-color: #6f5499;
             font-family: 'Open Sans Condensed', sans-serif;;
         }
+
         #footer {
             position: fixed;
             bottom: 0;
@@ -21,24 +22,30 @@
             box-sizing: border-box;
             font-size: 1.2em;
         }
-        #footer a{
+
+        #footer a {
             color: #333333;
             font-weight: bold;
         }
-        #footer a:hover{
+
+        #footer a:hover {
             color: #d44950;
         }
-        .login-block a{
+
+        .login-block a {
             display: block;
             padding-bottom: 20px;
         }
-        .login-block h1{
+
+        .login-block h1 {
             color: #fff;
         }
-        img{
+
+        img {
             height: 50px;
             width: auto;
         }
+
         .login-block {
             box-sizing: border-box;
             width: 400px;
@@ -48,15 +55,28 @@
             background-color: #243742;
             border-radius: 3px;
         }
+
         @media (max-width: 500px) {
-            .login-block {width: 300px;}
+            .login-block {
+                width: 300px;
+            }
         }
     </style>
 {% endblock %}
 {% block content %}
-    <div class="login-block">
+    <div class="login-block" ng-controller="AppCtrl">
         <h1>Login</h1>
-        <a href="/auth/facebook"><img src="images/fb.png" alt="facebook login" /></a>
-        <a href="/auth/google"><img src="images/gplus.png" alt="google+ login" /></a>        
+        <a href="/auth/facebook"><img src="images/fb.png" alt="facebook login"/></a>
+        <a href="/auth/google"><img src="images/gplus.png" alt="google+ login"/></a>
     </div>
+{% endblock %}
+{% block scripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular.min.js"></script>
+    <script>
+        var myApp = angular.module('myApp', []);
+
+        myApp.controller('AppCtrl', ['$scope', '$window', function ($scope, $window) {
+            $window.sessionStorage.token = undefined;
+        }]);
+    </script>
 {% endblock %}

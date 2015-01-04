@@ -4,20 +4,64 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7242888887823e9a68977b666734cb41",
+    "hash": "537438679e68edeb232fb4a38f5bca70",
     "packages": [
         {
-            "name": "monolog/monolog",
-            "version": "1.11.0",
+            "name": "firebase/php-jwt",
+            "version": "1.0.0",
+            "target-dir": "Firebase/PHP-JWT",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "ec3961874c43840e96da3a8a1ed20d8c73d7e5aa"
+                "url": "https://github.com/firebase/php-jwt.git",
+                "reference": "58c1e61d0dff797f2989c54415229f4016d57a6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/ec3961874c43840e96da3a8a1ed20d8c73d7e5aa",
-                "reference": "ec3961874c43840e96da3a8a1ed20d8c73d7e5aa",
+                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/58c1e61d0dff797f2989c54415229f4016d57a6d",
+                "reference": "58c1e61d0dff797f2989c54415229f4016d57a6d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "Authentication/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Neuman Vong",
+                    "email": "neuman+pear@twilio.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Anant Narayanan",
+                    "email": "anant@php.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
+            "homepage": "https://github.com/firebase/php-jwt",
+            "time": "2014-08-28 17:14:17"
+        },
+        {
+            "name": "monolog/monolog",
+            "version": "1.12.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Seldaek/monolog.git",
+                "reference": "1fbe8c2641f2b163addf49cc5e18f144bec6b19f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1fbe8c2641f2b163addf49cc5e18f144bec6b19f",
+                "reference": "1fbe8c2641f2b163addf49cc5e18f144bec6b19f",
                 "shasum": ""
             },
             "require": {
@@ -31,7 +75,7 @@
                 "aws/aws-sdk-php": "~2.4, >2.4.8",
                 "doctrine/couchdb": "~1.0@dev",
                 "graylog2/gelf-php": "~1.0",
-                "phpunit/phpunit": "~3.7.0",
+                "phpunit/phpunit": "~4.0",
                 "raven/raven": "~0.5",
                 "ruflin/elastica": "0.90.*",
                 "videlalvaro/php-amqplib": "~2.4"
@@ -50,7 +94,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.11.x-dev"
+                    "dev-master": "1.12.x-dev"
                 }
             },
             "autoload": {
@@ -76,7 +120,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2014-09-30 13:30:58"
+            "time": "2014-12-29 21:29:35"
         },
         {
             "name": "pimple/pimple",
@@ -552,16 +596,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.16.2",
+            "version": "v1.16.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "42f758d9fe2146d1f0470604fc05ee43580873fc"
+                "reference": "6dc11a1e8ecfc30e2c68aaeb218148409d8e68af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/42f758d9fe2146d1f0470604fc05ee43580873fc",
-                "reference": "42f758d9fe2146d1f0470604fc05ee43580873fc",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/6dc11a1e8ecfc30e2c68aaeb218148409d8e68af",
+                "reference": "6dc11a1e8ecfc30e2c68aaeb218148409d8e68af",
                 "shasum": ""
             },
             "require": {
@@ -596,7 +640,7 @@
                 },
                 {
                     "name": "Twig Team",
-                    "homepage": "https://github.com/fabpot/Twig/graphs/contributors",
+                    "homepage": "http://twig.sensiolabs.org/contributors",
                     "role": "Contributors"
                 }
             ],
@@ -605,22 +649,22 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2014-10-17 12:53:44"
+            "time": "2014-12-25 19:58:19"
         }
     ],
     "packages-dev": [
         {
             "name": "heroku/heroku-buildpack-php",
-            "version": "v51",
+            "version": "v53",
             "source": {
                 "type": "git",
                 "url": "https://github.com/heroku/heroku-buildpack-php.git",
-                "reference": "0ce8f136e151b6b41ccff3f784c5bbd88c80fc88"
+                "reference": "5eecb546765b88bea8bbb78dc0cf0a9fe0ee842c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/heroku/heroku-buildpack-php/zipball/0ce8f136e151b6b41ccff3f784c5bbd88c80fc88",
-                "reference": "0ce8f136e151b6b41ccff3f784c5bbd88c80fc88",
+                "url": "https://api.github.com/repos/heroku/heroku-buildpack-php/zipball/5eecb546765b88bea8bbb78dc0cf0a9fe0ee842c",
+                "reference": "5eecb546765b88bea8bbb78dc0cf0a9fe0ee842c",
                 "shasum": ""
             },
             "bin": [
@@ -651,7 +695,7 @@
                 "nginx",
                 "php"
             ],
-            "time": "2014-12-18 17:44:49"
+            "time": "2014-12-26 18:35:15"
         }
     ],
     "aliases": [],

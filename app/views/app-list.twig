@@ -3,28 +3,36 @@
     Apps List
 {% endblock %}
 {% block head %}
-    {{parent()}}
+    {{ parent() }}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <style>
-        .create-form{
+        .create-form {
             border: 1px solid gainsboro;
             padding: 30px;
             margin-top: 30px;
         }
-        .app-list{
+
+        .app-list {
             padding-left: 0;
         }
-        .app-list li{
+
+        .app-list li {
             list-style: none;
             margin: 15px 0;
             padding: 15px 0;
             border-bottom: 1px solid gainsboro;
         }
-        footer{
+
+        footer {
             padding: 20px;
             text-align: center;
         }
     </style>
+    <script>
+        if (typeof sessionStorage['token'] == "undefined" || sessionStorage['token'] === "undefined") {
+            window.location = '/login';
+        }
+    </script>
 {% endblock %}
 {% block content %}
     <header>
@@ -32,7 +40,8 @@
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -44,13 +53,15 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/logout">Logout</a></li>
                 </ul>
-            </div><!-- /.navbar-collapse -->
+            </div>
+            <!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
     </header>
     <div class="container">
         <form class="create-form">
             <h3>Register App</h3>
+
             <div class="form-group">
                 <input type="text" class="form-control" id="appName" name="appName" placeholder="Enter App Name">
             </div>
@@ -59,7 +70,8 @@
             </div>
             <div class="checkbox">
                 <label>
-                    <input type="checkbox" name="defaultAppAccess" id="defaultAppAccess" checked="true"> Default App Access
+                    <input type="checkbox" name="defaultAppAccess" id="defaultAppAccess" checked="true"> Default App
+                    Access
                 </label>
             </div>
             <div class="checkbox">
@@ -69,29 +81,47 @@
             </div>
             <button type="submit" class="btn btn-default" id="submit">Submit</button>
         </form>
-        <ul class="app-list row">
-            {% for app in apps %}
-                <li class="row">
-                    <a class="col-sm-10" href="{{app.app_url}}">{{ app.name }}</a>
-                    <button class="btn btn-danger col-sm-2" id="{{app._id}}">Delete</button>
-                </li>
-            {% endfor %}
+        <ul class="app-list row" id="app-list">
         </ul>
     </div>
 {% endblock %}
 {% block footer %}
-    {{parent()}}
+    {{ parent() }}
 {% endblock %}
 {% block scripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/zepto/1.1.4/zepto.min.js"></script>
     <script>
+        var appList = $('#app-list');
         $(document).ready(function () {
+            $.ajax({
+                type: 'GET',
+                url: '/api/appList',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('Authorization', sessionStorage['token']);
+                },
+                // post payload:
+                contentType: 'application/json',
+                success: function (data) {
+                    $.each(data, function (key, app) {
+                        var li = $('<li></li>', {class: 'row'});
+                        li.append('<a class="col-sm-10" href="' + app.app_url + '">' + app.name + '</a>');
+                        li.append('<button class="btn btn-danger col-sm-2" id="' + app._id.$id + '">Delete</button>');
+                        appList.append(li);
+                    });
+                },
+                error: function (xhr, type) {
+                    alert('Ajax error!')
+                }
+            });
             var deleteAjaxHandler = function () {
                 var id = $(this).attr('id');
                 var app_name = $(this).siblings('a').eq(0).text();
                 $.ajax({
                     type: 'DELETE',
-                    url: '/appList',
+                    url: '/api/appList',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', sessionStorage['token']);
+                    },
                     // post payload:
                     data: JSON.stringify({"_id": id, "name": app_name}),
                     contentType: 'application/json',
@@ -107,7 +137,10 @@
                 e.preventDefault();
                 $.ajax({
                     type: 'POST',
-                    url: '/appList',
+                    url: '/api/appList',
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('Authorization', sessionStorage['token']);
+                    },
                     // post payload:
                     data: JSON.stringify(
                             {

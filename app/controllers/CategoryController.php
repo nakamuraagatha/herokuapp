@@ -5,107 +5,79 @@ require('../vendor/autoload.php');
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 
-class CategoryController {
+class CategoryController
+{
 
-    private $collection = "ctgs";
-    private $ctgs;
+    private $categories_model;
     private $app_name = "QuotesApp";
 
-    function __construct() {
-        $uri = getenv('MONGO_URI') ? getenv('MONGO_URI') : local_configs('MONGO_URI');
-        $db = getenv('MONGO_DB') ? getenv('MONGO_DB') : local_configs('MONGO_DB');
-        $options = array("connectTimeoutMS" => 30000);
-        $connection = new MongoClient($uri, $options);
-        $database = $connection->selectDB($db);
-        if ($database->system->namespaces->findOne(array('name' => $db . "." . $this->collection)) === null) {
-            $this->ctgs = $database->createCollection($this->collection);
-        } else {
-            $this->ctgs = $database->selectCollection($this->collection);
-        }
+    function __construct()
+    {
+        $this->categories_model = new CategoryModel();
     }
 
-    public function indexAction(Application $app) {
-        $user = $app['session']->get('user');
-        $permitted = $app['session']->get('permissions');
-        if (is_api_authorized($permitted, $this->app_name, "read")) {
-            return $app['twig']->render('quotes.twig', array('user' => $user));
-        } else {
-            return $app->redirect("/");
-        }
+    public function indexAction(Application $app)
+    {
+        return $app['twig']->render('quotes.twig', array());
     }
 
-    public function createAction(Application $app, Request $request) {
-        $permitted = $app['session']->get('permissions');
+    public function createAction(Application $app, Request $request)
+    {
+        $decoded = decode_jwt_from_request($request, $app);
+        $permitted = $decoded->message->permissions;
+
         if (!is_api_authorized($permitted, $this->app_name, "write")) {
             return $app->json("You are not authorized!", 400);
         }
-        try {
-            $category = json_decode($request->getContent(), true);
-            $category['saved_at'] = new MongoDate();
-            $this->ctgs->insert($category);
-            return $app->json($category, 201);
-        } catch (MongoConnectionException $e) {
-            return $app->json('Error connecting to MongoDB server' . $e->getMessage(), 400);
-        } catch (MongoException $e) {
-            return $app->json('Mongo Error: ' . $e->getMessage(), 400);
-        } catch (Exception $e) {
-            return $app->json('Error: ' . $e->getMessage(), 400);
-        }
+
+        $category = json_decode($request->getContent(), true);
+
+        $category = $this->categories_model->create_category($category);
+        return $app->json($category, 201);
     }
 
-    public function readAction(Application $app) {
-        $permitted = $app['session']->get('permissions');
+    public function readAction(Application $app, Request $request)
+    {
+
+        $decoded = decode_jwt_from_request($request, $app);
+        $permitted = $decoded->message->permissions;
+
         if (!is_api_authorized($permitted, $this->app_name, "read")) {
             return $app->json("You are not authorized!", 400);
         }
-        try {
-            $cursor = $this->ctgs->find();
-            return $app->json(iterator_to_array($cursor), 200);
-        } catch (MongoConnectionException $e) {
-            return $app->json('Error connecting to MongoDB server' . $e->getMessage(), 400);
-        } catch (MongoException $e) {
-            return $app->json('Mongo Error: ' . $e->getMessage(), 400);
-        } catch (Exception $e) {
-            return $app->json('Error: ' . $e->getMessage(), 400);
-        }
+
+        $categories = $this->categories_model->get_categories();
+        return $app->json($categories, 200);
     }
 
-    public function updateAction($id, Application $app, Request $request) {
-        $permitted = $app['session']->get('permissions');
+    public function updateAction($id, Application $app, Request $request)
+    {
+        $decoded = decode_jwt_from_request($request, $app);
+        $permitted = $decoded->message->permissions;
+
         if (!is_api_authorized($permitted, $this->app_name, "write")) {
             return $app->json("You are not authorized!", 400);
         }
-        try {
-            $category = json_decode($request->getContent(), true);
-            $category['saved_at'] = new MongoDate();
-            $this->ctgs->update(
-                    array("_id" => new MongoId($id)), array('$set' => $category)
-            );
-            return $app->json($category, 200);
-        } catch (MongoConnectionException $e) {
-            return $app->json('Error connecting to MongoDB server' . $e->getMessage(), 400);
-        } catch (MongoException $e) {
-            return $app->json('Mongo Error: ' . $e->getMessage(), 400);
-        } catch (Exception $e) {
-            return $app->json('Error: ' . $e->getMessage(), 400);
-        }
+
+        $category = json_decode($request->getContent(), true);
+
+        $category = $this->categories_model->update_category($category, $id);
+
+        return $app->json($category, 200);
     }
 
-    public function deleteAction($id, Application $app) {
-        $permitted = $app['session']->get('permissions');
+    public function deleteAction($id, Application $app, Request $request)
+    {
+        $decoded = decode_jwt_from_request($request, $app);
+        $permitted = $decoded->message->permissions;
+
         if (!is_api_authorized($permitted, $this->app_name, "write")) {
             return $app->json("You are not authorized!", 400);
         }
-        try {
-            $this->ctgs->remove(array("_id" => new MongoId($id)));
-            return $app->json("Successsfully Deleted!", 200);
-        } catch (MongoConnectionException $e) {
-            return $app->json('Error connecting to MongoDB server' . $e->getMessage(), 400);
-        } catch (MongoException $e) {
-            return $app->json('Mongo Error: ' . $e->getMessage(), 400);
-        } catch (Exception $e) {
-            return $app->json('Error: ' . $e->getMessage(), 400);
-        }
+
+        $category = $this->categories_model->delete_category($id);
+
+        return $app->json("Successsfully Deleted!", 200);
     }
 
 }

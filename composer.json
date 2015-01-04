@@ -1,30 +1,34 @@
 {
-    "name": "Mystique/heroku",
-    "description": "Heroku PHP Application",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Ajay More",
-            "email": "ajmore.biz@gmail.com"
-        }
-    ],
-    "require": {
-        "ext-mongo": "*",
-        "silex/silex": "~1.1",
-        "monolog/monolog": "~1.7",
-        "twig/twig": "~1.0"
-    },
-    "require-dev": {
-        "heroku/heroku-buildpack-php": "*"
-    },
-    "autoload": {
-        "classmap": [
-            "app/hybridauth/Hybrid",
-            "app/controllers"
-        ],
-        "files": [
-            "app/config/config.php",
-            "app/utils/validations.php"
-        ]
+  "name": "Mystique/heroku",
+  "description": "Heroku PHP Application",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ajay More",
+      "email": "ajmore.biz@gmail.com"
     }
+  ],
+  "require": {
+    "ext-mongo": "*",
+    "silex/silex": "~1.1",
+    "monolog/monolog": "~1.7",
+    "twig/twig": "~1.0",
+    "firebase/php-jwt": "~1.0"
+  },
+  "require-dev": {
+    "heroku/heroku-buildpack-php": "*"
+  },
+  "autoload": {
+    "classmap": [
+      "app/hybridauth/Hybrid",
+      "app/controllers",
+      "app/models",
+      "app/utils/DBHelper.php"
+    ],
+    "files": [
+      "app/config/config.php",
+      "app/utils/validations.php",
+      "app/utils/common.php"
+    ]
+  }
 }
