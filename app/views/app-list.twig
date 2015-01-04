@@ -35,7 +35,7 @@
     </script>
 {% endblock %}
 {% block content %}
-    <header>
+    <header id="header" style="display: none">
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
@@ -58,7 +58,7 @@
             </div><!-- /.container-fluid -->
         </nav>
     </header>
-    <div class="container">
+    <div class="container" id="content" style="display: none">
         <form class="create-form">
             <h3>Register App</h3>
 
@@ -108,6 +108,8 @@
                         li.append('<button class="btn btn-danger col-sm-2" id="' + app._id.$id + '">Delete</button>');
                         appList.append(li);
                     });
+                    $('#header').show();
+                    $('#content').show();
                 },
                 error: function (xhr, type) {
                     window.location = "/";
