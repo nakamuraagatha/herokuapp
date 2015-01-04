@@ -54,7 +54,7 @@
     </header>
     <div ng-controller="AppCtrl">
         <span style="display:none;" id="token">{{ token }}</span>
-        <ul>
+        <ul ng-cloak>
             <li ng-repeat="app in appList"><a href="{[{app.app_url}]}">{[{app.name}]}</a></li>
         </ul>
     </div>
