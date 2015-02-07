@@ -1,0 +1,22 @@
+{
+  "name": "Beginner",
+  "version": "1.0.0",
+  "authors": [
+    "Ajay More"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-route": "~1.3.10",
+    "bootstrap": "~3.3.2",
+    "underscore": "~1.7.0",
+    "ngprogress": "~1.0.7",
+    "jquery": "~2.1.3"
+  }
+}

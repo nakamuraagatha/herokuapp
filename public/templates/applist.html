@@ -1,0 +1,57 @@
+<header id="parent-header">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/#/">Home</a>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<div class="container app-page">
+
+    <form class="row create-form" name="appForm" novalidate>
+        <h3>Register App</h3>
+        <div class="form-group">
+            <label for="appName">Application Name</label>
+            <input type="text" class="form-control" id="appName" placeholder="Enter name" ng-model="newApp.name" ng-minlength="4" ng-maxlength="20" required>
+        </div>
+        <div class="form-group">
+            <label for="appUrl">Application URL</label>
+            <input type="text" class="form-control" id="appUrl" placeholder="Application URL" ng-model="newApp.app_url" ng-minlength="7" ng-maxlength="100" required>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="newApp.defaultAppAccess" ng-init="newApp.defaultAppAccess=false"> Default read access
+            </label>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="newApp.defaultWriteAccess" ng-init="newApp.defaultWriteAccess=false"> Default write access
+            </label>
+        </div>
+        <button type="submit" class="btn btn-default" ng-disabled="appForm.$invalid" ng-click="createApp(newApp)" ng-show="!edit">Create</button>
+        <button type="submit" class="btn btn-default" ng-disabled="appForm.$invalid" ng-click="updateApp(newApp)" ng-show="edit">Save</button>
+    </form>
+    <div class="row">
+        <div class="col-xs-12 app-list" ng-repeat="item in registeredApps">
+            <div class="col-xs-12 col-md-6"><a href="{{item.app_url}}">{{ item.name }}</a>
+            </div>
+            <div class="col-xs-12 col-md-6 link-btns">
+                <button class="btn btn-link" ng-click="removeApp(item._id)">Delete</button>
+                <button class="btn btn-link" ng-click="prepareForEdit(item._id)">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>

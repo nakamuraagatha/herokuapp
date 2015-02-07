@@ -1,0 +1,25 @@
+[{
+  "url": "/",
+  "template": "templates/home.html",
+  "controller": "HomeController"
+}, {
+  "url": "/_=_",
+  "template": "templates/home.html",
+  "controller": "HomeController"
+}, {
+  "url": "/applist",
+  "template": "templates/applist.html",
+  "controller": "AppListController"
+}, {
+  "url": "/usersList",
+  "template": "templates/usersList.html",
+  "controller": "UsersPermissionsController"
+}, {
+  "url": "/categories",
+  "template": "templates/categories.html",
+  "controller": "CategoryController"
+}, {
+  "url": "/quotesList",
+  "template": "templates/quotes.html",
+  "controller": "QuotesController"
+}]

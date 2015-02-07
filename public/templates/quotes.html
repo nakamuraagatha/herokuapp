@@ -1,0 +1,52 @@
+<div class="container">
+    <header class="navbar navbar-default row">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/#/">Home</a>
+            <a class="navbar-brand" href="/#categories/">Quotes App</a>
+        </div>
+        <div class="navbar-collapse navbar-responsive-collapse collapse" aria-expanded="false" style="height: 1px;">
+            <ul class="nav navbar-nav  navbar-right">
+                <li ng-show="hasWriteAccess"><a class="btn btn-link" ng-click="showCreate = !showCreate">Add</a></li>
+                <li><a href="/logout" class="btn btn-link">Logout</a></li>
+            </ul>
+        </div>
+    </header>
+    <div class="row quote-title">
+        <h4>{{quoteTitleText}}</h4>
+    </div>
+    <div ng-show="showCreate">
+        <form class="form-create">
+            <textarea class="form-control" type="text" placeholder="Quote text..." ng-model="newQuoteText">
+            </textarea>
+            <input ng-show="!isAuthor" class="form-control" type="text" placeholder="Author" ng-model="newQuoteAuthor">
+            <button class="btn" ng-click="createQuote()">Create</button>
+        </form>
+    </div>
+
+    <ul class="ctg-list-q row">
+        <li ng-repeat="quote in quotes" class="col-sm-12">
+            <div class="actions" ng-show="hasWriteAccess">
+                <button ng-show="!saving[$index]" class="btn btn-link" ng-click="editQuote($index)">Edit</button>
+                <button ng-show="saving[$index]" class="btn btn-link" ng-click="saveQuote($index)" type="submit">Save</button>
+                <button class="btn btn-link" ng-click="deleteQuote($index)">Delete</button>
+            </div>
+            <blockquote ng-show="!saving[$index]">
+                <p>
+                    <span ng-click="showQuotes($index)" color-me>{{quote.text}}</span>
+                    <cite>
+                        <span ng-click="showQuotes($index)">{{quote.author}}</span>
+                    </cite>
+                </p>
+            </blockquote>
+            <input class="form-control" type="text" ng-model="quote.text" ng-show="saving[$index]">
+            <input class="form-control" type="text" ng-model="quote.author" ng-show="saving[$index] &&  !isAuthor">
+        </li>
+    </ul>
+    <footer id="footer" class="row">
+    </footer>
+</div>

@@ -1,0 +1,42 @@
+{
+  "name": "Aj Node App",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ajay More",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.10.1",
+    "cookie-parser": "^1.3.3",
+    "ejs": "^2.2.2",
+    "express": "^4.11.0",
+    "express-json": "^1.0.0",
+    "express-session": "^1.10.1",
+    "mongodb": "^1.4.28",
+    "mongodb-uri": "^0.9.7",
+    "mongoose": "^3.8.21",
+    "morgan": "^1.5.1",
+    "passport": "^0.2.1",
+    "passport-facebook": "^1.0.3",
+    "passport-google-oauth": "^0.1.5"
+  },
+  "devDependencies": {
+    "clean-css": "^3.0.7",
+    "gulp": "3.8.10",
+    "gulp-autoprefixer": "^2.1.0",
+    "gulp-concat": "^2.4.3",
+    "gulp-html-replace": "^1.4.3",
+    "gulp-less": "^2.0.1",
+    "gulp-minify-css": "^0.4.2",
+    "gulp-ngmin": "^0.3.0",
+    "gulp-plumber": "^0.6.6",
+    "gulp-rev": "^3.0.0",
+    "gulp-ruby-sass": "^0.7.1",
+    "gulp-sourcemaps": "^1.3.0",
+    "gulp-uglify": "^1.1.0",
+    "gulp-watch": "^4.0.2"
+  }
+}
