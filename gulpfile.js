@@ -24,10 +24,10 @@ gulp.task('scripts', function() {
       'public/scripts/filters/**/*.js'
     ])
     .pipe(concat(getBundleName() + '.js'))
-    // .pipe(sourcemaps.init())
-    // .pipe(ngmin())
-    // .pipe(uglify())
-    // .pipe(sourcemaps.write('./'))
+    .pipe(sourcemaps.init())
+    .pipe(ngmin())
+    .pipe(uglify())
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('public/scripts'));
 });
 
@@ -61,6 +61,6 @@ gulp.task('rev', ['less', 'scripts'], function() {
 });
 
 /*
-db.xxx.insert({'email': 'xxx@abc.com', 'appName': 'appList', 'read': true, 'write': true})
-db.xxx.insert({'email': 'xxx@abc.com', 'appName': 'usersList', 'read': true, 'write': true})
+db.xxx.insert({"email": "fdsasfd@g.co", "appName": "appList", "read": true, "write": true})
+db.xxx.insert({"email": "fdsasfd@g.co", "appName": "usersList", "read": true, "write": true})
 */
